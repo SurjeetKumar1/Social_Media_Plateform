@@ -15,5 +15,5 @@ const conntionRequestSchema=new mongoose.Schema({
     },
 })
 
-const ConntionRequest=mongoose.model("ConntionRequest",conntionRequestSchema);
-export default ConntionRequest;
+const ConnetionRequest=mongoose.model("ConnetionRequest",conntionRequestSchema);
+export default ConnetionRequest;

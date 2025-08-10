@@ -79,7 +79,6 @@ const authSlice=createSlice({
         state.isError=true,
         state.profileFetched=true,
         state.user=action.payload.userProfile
-        console.log("users",state.user)
        })
        .addCase(getAllUsers.fulfilled,(state,action)=>{
         state.isLoading=false,

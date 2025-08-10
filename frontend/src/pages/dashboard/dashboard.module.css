@@ -226,6 +226,16 @@
     white-space: nowrap; 
 }
 
+.commentDeleteBtnConatoner{
+    display: flex;
+    justify-content: space-between;
+}
+.commentDeleteBtnConatoner svg{
+    color: red;
+    width: 1.2rem;
+    cursor: pointer;
+}
+
 .postCommentContainer_commentBtn:hover {
     background-color: #ea580c;
 }

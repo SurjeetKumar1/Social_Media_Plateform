@@ -130,7 +130,7 @@ export const deleteCommentOfUser=async(req,res)=>{
             return res.status(401).json({Message:"You don't have a permission to delete the comment!"})
            }
 
-           await Comment.deleteOne({"id":comment_id});
+           await Comment.deleteOne({_id:comment_id});
            res.json({Message:"Comment deleted successfully"})
     
         }catch(err){
@@ -139,21 +139,33 @@ export const deleteCommentOfUser=async(req,res)=>{
         }
 }
 
-export const increment_likes=async(req,res)=>{
-        const {post_Id}=req.body;
 
-        try{
-         const post=await Post.findOne({_id:post_Id});
-         if(!post){
-            return res.status(404).json({Message:"Post not found!"});
-         }
-         post.likes=post.likes+1;
-         await post.save();
+export const increment_likes = async (req, res) => {
+    const { post_Id ,userId} = req.body;
 
-        res.json({Message:"Like Incremented!"});
-    
-        }catch(err){
-            console.log("Error during create post");
-            res.status(500).json({Message:"Error during Create Post!",Error:err.message});
+    try {
+        const post = await Post.findById(post_Id);
+        if (!post) {
+            return res.status(404).json({ Message: "Post not found!" });
         }
-}
+
+        const alreadyLiked = post.likedBy.includes(userId);
+
+        if (alreadyLiked) {
+            post.likedBy = post.likedBy.filter(id => id.toString() !== userId.toString());
+            post.likes = post.likes - 1;
+            await post.save();
+            return res.json({ Message: "Post unliked successfully!", likes: post.likes });
+        } else {
+            post.likedBy.push(userId);
+            post.likes = post.likes + 1;
+            await post.save();
+            return res.json({ Message: "Post liked successfully!", likes: post.likes });
+        }
+
+    } catch (err) {
+        console.error("Error during toggle like:", err);
+        res.status(500).json({ Message: "Error during toggle like!", Error: err.message });
+    }
+};
+

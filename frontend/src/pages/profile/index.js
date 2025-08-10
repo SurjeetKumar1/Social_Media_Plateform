@@ -13,13 +13,19 @@ function Profilepage() {
     const [userProfile, setUserProfile] = useState({});
     const [userPosts, setUserPost] = useState([]);
     const [isModalOpen,setIsModalOpen]=useState(false)
-    const [comapanyName,setCompanyName]=useState("");
+    const [isModalOpenForEduction,setIsModalOpenForEduction]=useState(false)
     const [inputData,setInputData]=useState({company:"",position:"",years:""});
+    const [inputDataForEducation,setInputDataForEducation]=useState({school:"",degree:"",fieldOfStudy:""});
     
     const handleWorkInputChange=(e)=>{
       const {name,value}=e.target;
       setInputData({...inputData,[name]:value})
     }
+
+    const handleEducationInputChange=(e)=>{
+        const {name,value}=e.target;
+        setInputDataForEducation({...inputDataForEducation,[name]:value})
+      }
 
     const authState = useSelector((state) => state.auth);
     const postReducer = useSelector((state) => state.posts);
@@ -68,7 +74,6 @@ function Profilepage() {
         token:localStorage.getItem("token"),
         name:userProfile.userId.name
     })
-    console.log("userprofile",userProfile)
 
     const response=await clientServer.post("/update_profile_data",{
         token:localStorage.getItem("token"),
@@ -109,6 +114,7 @@ function Profilepage() {
                                
                             >
                                 <div className={{ flex: "0.8" }}>
+                                <p style={{ color: "grey",marginBottom:"0.5rem" }}>{userProfile.userId.username}</p>
                                     <div style={{ display: "flex", width: "fit-content", alignItems: "center", gap: "1.2rem" }}>
                                         <input
                                             className={styles.nameEdit}
@@ -124,7 +130,7 @@ function Profilepage() {
                                                 })
                                             }
                                         />
-                                        <p style={{ color: "grey" }}>{userProfile.userId.username}</p>
+                                        
                                     </div>
 
                                     <div>
@@ -190,6 +196,36 @@ function Profilepage() {
                                 className={styles.addWorkButton}>Add Work</button>
                             </div>
                         </div>
+                        
+                        <div className="workHistory">
+                            <h4>Education</h4>
+                            <div className={styles.workHistoryConatiner}>
+                                {userProfile.education.map((education, index) => {
+                                    return (
+                                        <div key={index} className={styles.workHistoryCard}>
+                                            <p
+                                                style={{
+                                                    fontWeight: "bold",
+                                                    display: "flex",
+                                                    alignItems: "center",
+                                                    gap: "0.8rem",
+                                                }}
+                                            >
+                                                School - {education.school}
+                                            </p>
+                                            <p>Degree - {education.degree}</p>
+                                            <p>Field Of Study - {education.fieldOfStudy}</p>
+                                        </div>
+                                    );
+                                })}
+                                <button 
+                                onClick={()=>{
+                                    setIsModalOpenForEduction(true)
+                                }}
+                                className={styles.addWorkButton}>Add Education</button>
+                            </div>
+                        </div>
+
                         {userProfile!=authState.user && 
                         <div
                         onClick={()=>{
@@ -201,6 +237,8 @@ function Profilepage() {
                         }
                     </div>
                 )}
+
+
 
 
 {
@@ -225,6 +263,32 @@ function Profilepage() {
                 </div>
             </div>
           }
+
+
+{
+            isModalOpenForEduction &&
+            <div
+              onClick={() => {
+                setInputDataForEducation(false)
+              }}
+              className={styles.commentsContainer}>
+             <div
+                onClick={(e) => e.stopPropagation()}
+                className={styles.getAllCommentsContainer}>
+        <input required onChange={handleEducationInputChange} name="school" className={styles.inputField} type='text' placeholder='Enter School'/>
+        <input required onChange={handleEducationInputChange} name="degree" className={styles.inputField} type='text' placeholder='Enter Degree'/>
+        <input required onChange={handleEducationInputChange} name="fieldOfStudy" className={styles.inputField} type='text' placeholder='Field Of Study'/>
+        <div
+        onClick={()=>{
+            setUserProfile({...userProfile,education:[...userProfile.education,inputDataForEducation]})
+            setIsModalOpenForEduction(false);
+        }}
+        className={styles.updateProfileButton}>Add Work</div>
+                </div>
+            </div>
+          }
+
+
             </DashBoardLayout>
         </UserLayout>
     );

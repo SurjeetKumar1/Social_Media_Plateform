@@ -5,7 +5,7 @@ export const getAllPosts=createAsyncThunk("post/getAllposts",async(_,thunkAPI)=>
         try{
             const response=await clientServer.get(("/post"));
             // return thunkAPI.fulfillWithValue(response.data.post);
-            console.log(response.data.post);
+           
             return response.data.post.reverse();
         }catch(err){
             return thunkAPI.rejectWithValue(response.data);
@@ -51,11 +51,12 @@ export const deleletPost=createAsyncThunk("post/deletePost",async(post_id,thunkA
       }
 })
 
-export const likePost=createAsyncThunk("post/likePost",async({post_id},thunkAPI)=>{
-    console.log("id",post_id);
+export const likePost=createAsyncThunk("post/likePost",async({post_id,userId},thunkAPI)=>{
     try{
+      console.log(post_id,userId)
       const response=await clientServer.post("increment_post_like",{
-            post_Id:post_id
+        post_Id: post_id,
+        userId: userId
       })
       return response.data;
     }catch(err){
@@ -89,5 +90,22 @@ export const postComment=createAsyncThunk("post/postComment",async(commetData,th
 
   }catch(err){
       return thunkAPI.rejectWithValue("Something went wrong");
+  }
+})
+
+export const deleteComment=createAsyncThunk("post/deleteComment",async(commentData,thunkAPI)=>{
+  try{
+    console.log(commentData.token,"token");
+    const response=await clientServer.delete("/delete_comment",{
+      data: {
+        token: commentData.token,
+        comment_id: commentData.comment_id
+      }
+    })
+
+    return thunkAPI.fulfillWithValue(response.data);
+
+  }catch(err){
+       return thunkAPI.rejectWithValue(err.response.data);
   }
 })

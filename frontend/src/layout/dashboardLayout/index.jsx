@@ -61,8 +61,6 @@ function DashBoardLayout({ children }) {
 
                     <div className={styles.homeContainer_extraContainer}>
                         <h3>Top Profiles</h3>
-                        {console.log("all user profile",authState.all_users_profiles)}
-                        {console.log("all profile fetched",authState.allProfilesFetched )}
                         
                         {authState.allUsersProfilesFetched && 
                

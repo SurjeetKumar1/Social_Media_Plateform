@@ -263,6 +263,7 @@ import React, { useEffect, useState } from "react";
 import styles from "./index.module.css";
 
 function ViewProfilePage({ userProfile }) {
+  console.log("user profile",userProfile);
   const router = useRouter();
   const postReducer = useSelector((state) => state.posts);
   const authState = useSelector((state) => state.auth);
@@ -383,7 +384,25 @@ function ViewProfilePage({ userProfile }) {
                   <strong>
                     {work.company} - {work.position}
                   </strong>
-                  <span>{work.years}</span>
+                  <span>Years - {work.years}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+
+           {/* Education History */}
+           <div className={styles.workHistory}>
+            <h4>Education</h4>
+            <div className={styles.workList}>
+              {userProfile.education.map((education, i) => (
+                <div key={i} className={styles.workCard} style={{display:"flex", flexDirection:"column",gap:"0.7rem"}}>
+                  <strong>
+                    College : {education.school}
+                  </strong>
+                  {/* <span>Years - {work.years}</span> */}
+                  <span >Degree: {education.degree }</span>
+                  <span>Course: {education.fieldOfStudy}</span>
                 </div>
               ))}
             </div>
