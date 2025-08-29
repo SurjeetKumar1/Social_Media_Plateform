@@ -30,6 +30,7 @@ function Profilepage() {
     const authState = useSelector((state) => state.auth);
     const postReducer = useSelector((state) => state.posts);
 
+
     useEffect(() => {
         dispatch(getAboutUser({ token: localStorage.getItem("token") }));
         dispatch(getAllPosts());
@@ -183,9 +184,10 @@ function Profilepage() {
                                                     gap: "0.8rem",
                                                 }}
                                             >
-                                                {work.company} - {work.position}
+                                                Company - {work.company}
                                             </p>
-                                            <p>{work.years}</p>
+                                            <p>Position - {work.position}</p>
+                                            <p>Years - {work.years}</p>
                                         </div>
                                     );
                                 })}
