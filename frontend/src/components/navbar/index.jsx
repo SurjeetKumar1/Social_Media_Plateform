@@ -1,9 +1,9 @@
-
-import React from 'react';
+import React from "react";
 import styles from "./styles.module.css";
-import { useRouter } from 'next/router';
-import { useDispatch, useSelector } from 'react-redux';
-import { reset } from '@/config/redux/reducer/authReducer';
+import { useRouter } from "next/router";
+import { useDispatch, useSelector } from "react-redux";
+import { reset } from "@/config/redux/reducer/authReducer";
+import Image from "next/image";
 
 function Navbar() {
     const dispatch = useDispatch();
@@ -13,23 +13,31 @@ function Navbar() {
     return (
         <div className={styles.container}>
             <nav className={styles.navBar}>
-                <h1 
+                {/* Optimized Next.js Image */}
+                <div
                     className={styles.logo}
                     onClick={() => router.push("/")}
+                    style={{ cursor: "pointer" }}
                 >
-                    Pro Connect
-                </h1>
+                    <Image
+                        src="/images/linkify-logo.png"
+                        alt="Linkify Logo"
+                        width={120}  // adjust size as needed
+                        height={40}
+                        priority
+                    />
+                </div>
 
                 <div className={styles.navBarOptionContainer}>
                     {authState.profileFetched ? (
                         <div className={styles.menu}>
-                            <p 
+                            <p
                                 className={styles.navLink}
                                 onClick={() => router.push("/profile")}
                             >
                                 Profile
                             </p>
-                            <p 
+                            <p
                                 className={styles.navLink}
                                 onClick={() => {
                                     localStorage.removeItem("token");
@@ -41,7 +49,7 @@ function Navbar() {
                             </p>
                         </div>
                     ) : (
-                        <div 
+                        <div
                             onClick={() => router.push("/login")}
                             className={styles.btnJoin}
                         >
